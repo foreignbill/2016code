@@ -1,0 +1,145 @@
+#include <cstdio>
+#include <climits>
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <set>
+using namespace std;
+set<string> Set;
+int main(){
+	freopen("input.txt","r",stdin);
+	int T,n;
+	cin>>T;
+	while(T--){
+		bool ok=false;
+		Set.clear();
+		scanf("%d",&n);
+		for(int cnt=1;cnt<=n;cnt++){
+			int a[7];
+			for(int j=1;j<=6;j++) scanf("%d",&a[j]);
+			int min=INT_MAX,id;
+			for(int i=1;i<=6;i++){
+				if(min>=a[i]){
+					min=a[i];
+					id=i;
+				}
+			}
+			
+			int NEWpre[7];
+			for(int i=id;i<=6;i++) NEWpre[i-id+1]=a[i];
+			for(int i=id-1;i>=1;i--) NEWpre[6-(id-i)+1]=a[i];
+			int NEWrse[7];
+			
+			for(int i=id;i>=1;i--) NEWrse[id-i+1]=a[i];
+			for(int i=6;i>id;i--)  NEWrse[id+(6-i)+1]=a[i];
+			
+			string s1,s2;
+			s1.clear();
+			s2.clear();
+			int tp=0;
+			for(int i=1;i<=6;i++){
+				int now = NEWpre[i];
+				int base [10];
+				base[0]=0;
+				while(now){
+					base[++base[0]]=now%10;
+					now/=10;
+				}
+				for(int i=base[0];i>=1;i--){
+					s1=s1+(char)(base[i]+'0');
+				}
+			}
+			if(Set.count(s1)==1){
+				ok=true;
+				//continue;
+			}
+			else{
+				Set.insert(s1);
+			}
+			cout<<s1<< " " <<s2<<"*"<<endl; 
+			tp=0;
+			for(int i=1;i<=6;i++){
+				int now = NEWrse[i];
+				int base[10];
+				base[0]=0;
+				while(now){
+					base[++base[0]]=now%10;
+					now/=10;
+				}
+				for(int i=base[0];i>=1;i--){
+					s2=s2+(char)(base[i]+'0');
+				}
+			}
+			if(Set.count(s2)==1){
+				ok=true;
+				//continue;
+			}
+			else{
+				Set.insert(s2);
+			}
+			
+			//__________________
+			
+			min=INT_MAX,id;
+			for(int i=1;i<=6;i++){
+				if(min>a[i]){
+					min=a[i];
+					id=i;
+				}
+			}
+			
+			for(int i=id;i<=6;i++) NEWpre[i-id+1]=a[i];
+			for(int i=id-1;i>=1;i--) NEWpre[6-(id-i)+1]=a[i];
+			
+			for(int i=id;i>=1;i--) NEWrse[id-i+1]=a[i];
+			for(int i=6;i>id;i--)  NEWrse[id+(6-i)+1]=a[i];
+			
+			s1.clear();
+			s2.clear();
+			tp=0;
+			for(int i=1;i<=6;i++){
+				int now = NEWpre[i];
+				int base [10];
+				base[0]=0;
+				while(now){
+					base[++base[0]]=now%10;
+					now/=10;
+				}
+				for(int i=base[0];i>=1;i--){
+					s1=s1+(char)(base[i]+'0');
+				}
+			}
+			if(Set.count(s1)==1){
+				ok=true;
+				//continue;
+			}
+			else{
+				Set.insert(s1);
+			}
+			cout<<s1<< " " <<s2<<"*"<<endl; 
+			tp=0;
+			for(int i=1;i<=6;i++){
+				int now = NEWrse[i];
+				int base[10];
+				base[0]=0;
+				while(now){
+					base[++base[0]]=now%10;
+					now/=10;
+				}
+				for(int i=base[0];i>=1;i--){
+					s2=s2+(char)(base[i]+'0');
+				}
+			}
+			if(Set.count(s2)==1){
+				ok=true;
+				//continue;
+			}
+			else{
+				Set.insert(s2);
+			}
+			cout<<s1<< " " <<s2<<"*"<<endl; 
+		}
+		puts(ok?"Twin snowflakes found.":"No two snowflakes are alike."); 
+	}
+	return 0;
+} 

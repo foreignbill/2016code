@@ -1,0 +1,123 @@
+# include <stdio.h>
+# include <string.h>
+# include <algorithm>
+using namespace std;
+int vis[10010];
+struct segment{
+	int begin;
+	int end;
+};
+struct node{
+	int cur;
+	int num;
+};
+struct node s1[50010];
+struct segment s2[10010];
+int compare2(struct segment a, struct segment b){
+	if(a.begin!=b.begin){
+		return a.begin<b.begin;
+	}
+	return a.end<b.end;
+}
+int main(){
+	int n, m;
+	int num, count=0;
+	int i, j, k;
+	scanf("%d%d", &n, &m);
+	for(i=0; i<=50009; i++){
+		s1[i].cur=0;
+	}
+	for(i=1; i<=n; i++){
+		scanf("%d", &num);
+		s1[num].cur = 1;
+	}
+	for(i = 1; i <= m; i++){
+		scanf("%d%d", &s2[i].begin, &s2[i].end); 
+	}
+	memset(vis, 0, sizeof(vis));
+	sort(s2 + 1, s2 + 1 + m, compare2);
+	int max, cur;
+	for(i=1; i<=m; i++){
+		max=-1;
+		if(!vis[i]){
+			for(j = s2[i].begin; j <= s2[i].end; j++){
+				if(s1[j].cur){
+					s1[j].num=0;
+					for(k = i+1; k <= m; k++){
+						if(s2[k].begin<=j&&s2[k].end>=j&&!vis[k]){
+							s1[j].num++;
+						}
+						else{
+							break;
+						}
+					}
+					if(s1[j].num>max){
+						max=s1[j].num;
+						cur=j;
+						
+					}
+				}
+			}
+			count++;
+			for(k = i+1; k <= m; k++){
+				if(s2[k].begin<=cur){
+					vis[k]=1;
+				}
+				else{
+					break;
+				}
+			}
+		}
+	}
+	printf("%d", count);
+	return 0;
+}
+
+
+
+
+#include <stdio.h>
+#define max(a,b) (a)>(b)?(a):(b)
+#define MAXM 30
+#define MAXN 30001
+
+
+int main()
+{
+    int i, j;
+    int N, m, v[MAXM], p[MAXM];
+    int f[MAXM][MAXN];
+    int ans;
+
+    scanf("%d%d", &N, &m);
+    for(i=1; i<=m; i++){
+        scanf("%d%d", &v[i], &p[i]);
+    }
+
+    for(i=1; i<=m; i++){
+
+        for(j=N; j>=0; j--){
+
+            if(j < v[i]){
+                f[i][j] = f[i-1][j];
+            }else{
+                f[i][j] = max(f[i-1][j], f[i-1][j-v[i]]+v[i]*p[i]);
+            }
+
+
+        }
+    }
+
+    ans = -1;
+    for(i=N; i>=0; i--){
+        ans = max(f[m][i], ans);
+    }
+
+    printf("%d", ans);
+
+    return 0;
+}
+
+
+
+
